@@ -161,6 +161,34 @@ matrix matMul(matrix A, matrix B)
     }
 }
 
+matrix getCol(matrix A, int col)
+{
+    int C=A.col;
+    int R=A.row;
+    matrix col_matrix;
+    createMatrix(&col_matrix, R,1);
+
+    for(int i=0; i<R; i++)
+    {
+        setItem(&col_matrix, i, 0, getItem(A,i,col));
+    }
+    return col_matrix;
+}
+
+matrix getRow(matrix A, int row)
+{
+    int C=A.col;
+    int R=A.row;
+    matrix row_matrix;
+    createMatrix(&row_matrix, 1,C);
+
+    for(int i=0; i<C; i++)
+    {
+        setItem(&row_matrix, 0, i, getItem(A,row,i));
+    }
+    return row_matrix;
+}
+
 matrix identityMatrix(unsigned int k)
 {
     matrix I;
@@ -212,5 +240,5 @@ int main()
     setItem(&X,1,0,2);setItem(&X,1,1,5);setItem(&X,1,2,0);
     setItem(&X,2,0,9);setItem(&X,2,1,1);setItem(&X,2,2,3);
 
-    printMatrix(power(X,3));
+    printMatrix(getRow(X,2));
 }
