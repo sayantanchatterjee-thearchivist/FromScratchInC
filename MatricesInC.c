@@ -30,7 +30,7 @@ double getItem(matrix X, unsigned int row, unsigned int col)
 
 }
 
-double setItem(matrix* X, unsigned int row, unsigned int col, double value)
+void setItem(matrix* X, unsigned int row, unsigned int col, double value)
 {
     unsigned int R=(*X).row;
     unsigned int C=(*X).col;
@@ -47,7 +47,7 @@ matrix transpose(matrix X)
     {
         for(int j=0; j<X.col; j++)
         {
-            Xt.data[(X.col*i)+(j)]=X.data[(X.col*j)+(i)];
+            Xt.data[(Xt.col*j)+(i)]=X.data[(X.col*i)+(j)];
         }
     }
     return Xt;
@@ -137,6 +137,28 @@ matrix scalarMult(double k, matrix A)
     return C;
 }
 
+_Bool isEqual(matrix A, matrix B)
+{
+    if(A.row!=B.row || A.col!=B.col)
+    {
+        printf("Shape of both the matrices must be equal in order to verify equality.");
+    }
+    else
+    {
+        for(int i=0; i<A.row; i++)
+        {
+            for(int j=0; j<A.col; j++)
+            {
+                if(A.data[(A.col*i)+j]!=B.data[(A.col*i)+j])
+                {
+                    return 0;
+                }
+            }
+        }
+        return 1;
+    }
+}
+
 matrix matMul(matrix A, matrix B)
 {
     if(A.col!=B.row)
@@ -189,6 +211,25 @@ matrix getRow(matrix A, int row)
     return row_matrix;
 }
 
+int totalElements(matrix X)
+{
+    return X.row*X.col;
+}
+
+matrix* reshape(matrix* X, int new_row, int new_col)
+{
+    if((*X).row*(*X).col==new_row*new_col)
+    {
+        (*X).row=new_row;
+        (*X).col=new_col;
+        return X;
+    }
+    else
+    {
+        printf("Cannot be reshaped. Element count does not match.");
+    }
+}
+
 matrix identityMatrix(unsigned int k)
 {
     matrix I;
@@ -234,11 +275,11 @@ int main()
 {
     //quick test:
     matrix X;
-    createMatrix(&X,3,3);
+    createMatrix(&X,2,3);
 
     setItem(&X,0,0,4);setItem(&X,0,1,3);setItem(&X,0,2,7);
     setItem(&X,1,0,2);setItem(&X,1,1,5);setItem(&X,1,2,0);
-    setItem(&X,2,0,9);setItem(&X,2,1,1);setItem(&X,2,2,3);
-
-    printMatrix(getRow(X,2));
+    
+    matrix Xt=transpose(X);
+    printMatrix(Xt);
 }
